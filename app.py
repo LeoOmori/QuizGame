@@ -20,7 +20,9 @@ def handleMsg(client,self):
 
 
 class LoginScreen(Screen):
-  pass
+  
+  def teste(self):
+    apelido = self.ids.apelido.text
 
 
 
@@ -39,16 +41,21 @@ class MainApp(MDApp):
       kv = Builder.load_file("app.kv")
       return kv
 
-    def createConnection(self):
-      self.root.current = 'profile'
-      PORT = 5050
-      SERVER = "127.0.0.1"
-      ADDR = (SERVER, PORT)
-      self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      self.client.connect(ADDR)
+    
 
-      thread1 = threading.Thread(target=handleMsg, args=(self.client,self))
-      thread1.start()
+    def createConnection(self):
+      login = self.root.get_screen("login")
+
+      if login.ids.apelido.text == "1":
+        self.root.current = 'profile'
+        PORT = 5050
+        SERVER = "127.0.0.1"
+        ADDR = (SERVER, PORT)
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.connect(ADDR)
+
+        thread1 = threading.Thread(target=handleMsg, args=(self.client,self))
+        thread1.start()
     
     def sendMessage(self):
       profile = self.root.get_screen("profile")
