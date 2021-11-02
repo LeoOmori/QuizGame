@@ -18,7 +18,11 @@ players = []
 def broadcast(msg):
 
     for player in players:
-        player["conn"].send(msg.encode())
+        try:
+            player["conn"].send(msg.encode())
+        except socket.error as e:
+            del player
+            print("deletado")
         time.sleep(0.2)
         
 def getMsg(conn, addr):
@@ -32,13 +36,23 @@ def getMsg(conn, addr):
         msg = conn.recv(1024).decode(FORMATO)
         if(msg):
             broadcast(msg)
+        
+def timer():
+
+    for i in range(30):
+        newMsg = "timer="+str(i*3.5)
+        broadcast(newMsg)
+        time.sleep(1)
+    broadcast("timer=0")
 
 def mainServer():
     print("servidor Iniciado!!!!!!")
     server.listen()
     while(True):
         conn, addr = server.accept()
-        thread = threading.Thread(target=getMsg, args=(conn,addr))
-        thread.start()
+        thread1 = threading.Thread(target=getMsg, args=(conn,addr))
+        thread2 = threading.Thread(target=timer)
+        thread2.start()
+        thread1.start()
 
 mainServer()

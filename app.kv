@@ -115,9 +115,10 @@ ScreenManager:
                             text:"conectou..."   
             FloatLayout:
                 MDProgressBar:
+
                     value:95
                     color:(0.4,0.6,1,1)
-                    pos_hint:{"x":0,"top":0.6}
+                    pos_hint:{"x":0,"top":0.3}
 
     
 <ProfileScreen>:
@@ -196,7 +197,8 @@ ScreenManager:
 
 
                 MDProgressBar:
-                    value:95
+                    id: progress2
+                    value:0
                     color:(0.4,0.6,1,1)                    
 
 
