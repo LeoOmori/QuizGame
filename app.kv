@@ -1,0 +1,255 @@
+ScreenManager:
+    LoginScreen:
+    ProfileScreen:
+
+<LoginScreen>:
+    name: "login"
+    GridLayout:
+        cols:1
+        padding:50
+        pos:0,0
+        spacing:10
+        MDLabel:
+            text: "Trivia Game!"
+            adaptive_height: True
+
+        MDSeparator:
+            height: "1dp"
+
+        MDTextField:
+            hint_text:"apelido"
+            mode: "rectangle"
+        MDTextField:
+            hint_text: "IP"
+            mode: "rectangle"
+
+        MDFillRoundFlatButton:
+            text: "Conectar"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            on_press: app.createConnection()
+        
+        BoxLayout:
+
+            orientation: "vertical"
+            canvas.before:
+                Color:
+                    rgba: 0.82, 0.82, 0.82, 1 
+                RoundedRectangle:
+                    pos: self.pos
+                    size: root.width-100,root.height-335
+            
+            BoxLayout:
+                
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  
+                    RoundedRectangle:
+                        pos:  52, 53
+                        size: root.width-105,root.height-340
+
+                size: self.parent.size  # important!
+                pos: self.parent.pos  # important!
+                orientation: "vertical"
+
+            
+                FloatLayout:
+                    size_hint_y:None
+                    size_hint_x:None
+                    size:200,50
+                    Label:
+                        canvas.before:
+                            Color:
+                                rgba: 0, 0.5, 1, 1  
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+
+                        size: 200,30
+                        text:"Aguardando jogadores"
+                        pos_hint:{"x":0.1,"top":0.9}
+                StackLayout:
+                    orientation: "tb-lr"
+                    padding:20
+                    GridLayout:
+                        cols:2
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"leonardo"
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"conectou..."   
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"leonardo"
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"conectou..."   
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"leonardo"
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"conectou..."  
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"leonardo"
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"conectou..."   
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"leonardo"
+                        MDLabel:
+                            size_hint_y:None
+                            height:30
+                            text:"conectou..."   
+            FloatLayout:
+                MDProgressBar:
+                    value:95
+                    color:(0.4,0.6,1,1)
+                    pos_hint:{"x":0,"top":0.6}
+
+    
+<ProfileScreen>:
+    name: 'profile'
+    GridLayout:
+        cols:2
+        padding:25
+        spacing:10
+        BoxLayout:
+            orientation:"vertical"
+            size_hint_x:None
+            width: dp(330)
+            canvas.before:
+                Color:
+                    rgba: 0.6, 0.6, 0.6, 1 
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
+            MDLabel:
+                text: "Jogadores"
+                size_hint_y:None
+                height:50
+                halign:"center"
+            MDSeparator:
+                height: "1dp"      
+            
+            BoxLayout:
+                size_hint_y: .9 
+
+        BoxLayout:
+            spacing:20
+            orientation:"vertical"
+
+
+            BoxLayout:
+                orientation:"vertical"
+                size_hint_y:None
+                height: 200
+                canvas.before:
+                    Color:
+                        rgba: 0.6, 0.6, 0.6, 1  
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                spacing:10
+
+                MDLabel:
+                    text: "Texto de 6 letras"
+                    size_hint_y:None
+                    height:50
+                    halign:"center"
+                MDSeparator:
+                    height: "1dp" 
+
+                BoxLayout:
+                    orientation:'vertical'
+                    size_hint_y: None
+                    height:70
+                    spacing:5
+                    MDLabel:
+                        size_hint_y: None
+                        height: 24
+                        markup: True
+                        text:
+                            '[b]Tema[/b]:  LoremLorem\n[b] Pista[/b]:  loremLorem\n '
+                    MDLabel:
+                        font_style:"H5"
+                        size_hint_y: None
+                        height: 30
+                        halign:"center"
+                        text:
+                            'JAck Daniels'  
+      
+
+
+
+                MDProgressBar:
+                    value:95
+                    color:(0.4,0.6,1,1)                    
+
+
+            BoxLayout:
+                orientation:"vertical"
+                canvas.before:
+                    Color:
+                        rgba: 0.6, 0.6, 0.6, 1  
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+
+                FloatLayout:
+                    size_hint_y:None
+                    size_hint_x:None
+                    size:80,25
+                    Label:
+                        canvas.before:
+                            Color:
+                                rgba: 0, 0.5, 1, 1  
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: 80,25
+                        text:"log"
+                        pos_hint:{"x":0.1,"top":1.6}
+                 
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True    
+                    scroll_y:0
+                    bar_width:10      
+                    height: 500
+                    BoxLayout:
+                        id:chatLog
+                        orientation:"vertical"  
+                        size_hint_y: None
+                        height:200
+
+
+
+
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y:None
+                height:50
+                spacing:20
+                MDTextField:
+                    id:chatInput
+                    hint_text: "escreva sua resposta"
+                    icon_left: "pencil"
+                MDFillRoundFlatButton:
+                    text: "enviar"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    on_press: app.sendMessage()
