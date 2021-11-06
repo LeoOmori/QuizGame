@@ -36,15 +36,14 @@ def broadcast(msg):
         
 def getMsg(conn, addr):
 
-    players.append({
-        "addr":addr,
-        "conn":conn,
-    })
-
-    broadcast()
-
     while(True):
+
         msg = conn.recv(1024).decode(FORMATO)
+        name = msg.split(":")[0]
+        # players.append({
+        #     "addr":addr,
+        #     "conn":conn,
+        # })
         if(msg):
             broadcast(msg)
         
