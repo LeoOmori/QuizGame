@@ -11,8 +11,17 @@ FORMATO = 'utf-8'
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-
 players = []
+
+def broadcastPlayers():
+    
+    for player in players:
+        try:
+            player["conn"].send(msg.encode())
+        except socket.error as e:
+            del player
+            print("deletado")
+        time.sleep(0.2)
 
 
 def broadcast(msg):
@@ -31,6 +40,8 @@ def getMsg(conn, addr):
         "addr":addr,
         "conn":conn,
     })
+
+    broadcast()
 
     while(True):
         msg = conn.recv(1024).decode(FORMATO)

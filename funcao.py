@@ -1,8 +1,8 @@
 
-def comparaString():
+def comparaString(a,b):
 
-    string1 = input()
-    string2 = input()
+    string1 = a
+    string2 = b
    
 
     size_a = len(string1) + 1
@@ -47,4 +47,6 @@ def comparaString():
 
     print('Distancia entre {}  e {} é {}.'.format(string1, string2, matrix[size_a - 1][size_b - 1]))
     print('')
-comparaString()
+
+    return matrix[size_a - 1][size_b - 1]
+comparaString("avengers", "avengar")

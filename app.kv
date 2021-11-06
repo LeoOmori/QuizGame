@@ -17,9 +17,11 @@ ScreenManager:
             height: "1dp"
 
         MDTextField:
+            id:apelido
             hint_text:"apelido"
             mode: "rectangle"
         MDTextField:
+            id:ip
             hint_text: "IP"
             mode: "rectangle"
 
@@ -144,7 +146,10 @@ ScreenManager:
                 height:50
                 halign:"center"
             MDSeparator:
-                height: "1dp"      
+                height: "1dp"
+
+            MDList:
+                id: containerList        
             
             BoxLayout:
                 size_hint_y: .9 
@@ -186,6 +191,7 @@ ScreenManager:
                         text:
                             '[b]Tema[/b]:  LoremLorem\n[b] Pista[/b]:  loremLorem\n '
                     MDLabel:
+                        id:titleWord
                         font_style:"H5"
                         size_hint_y: None
                         height: 30

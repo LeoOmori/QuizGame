@@ -9,6 +9,8 @@ import time
 import kivy.properties as kyprops
 
 
+from funcao import comparaString;
+
 FORMATO = 'utf-8'
 
 def handleMsg(client,self):
@@ -19,7 +21,7 @@ def handleMsg(client,self):
   while(True):
     msg = client.recv(1024).decode()
     if(msg.startswith("timer=")):
-      chatLog.add_widget(MDLabel(markup=True,text="ta contando",size_hint_y=None,height=24))
+      # chatLog.add_widget(MDLabel(markup=True,text="ta contando",size_hint_y=None,height=24))
       progress2.value = float(msg.split("=")[1])
     else:
       chatLog.add_widget(MDLabel(markup=True,text=msg,size_hint_y=None,height=24))
@@ -47,7 +49,13 @@ class MainApp(MDApp):
       return kv
 
     def createConnection(self):
+      self.choosenWord = "avengers"
+      login = self.root.get_screen("login")
+      self.apelido = login.ids.apelido.text
       self.root.current = 'profile'
+      profile = self.root.get_screen("profile")
+      titleWord =  profile.ids.titleWord
+      titleWord.text = self.choosenWord
       PORT = 5050
       SERVER = "127.0.0.1"
       ADDR = (SERVER, PORT)
@@ -59,7 +67,13 @@ class MainApp(MDApp):
     
     def sendMessage(self):
       profile = self.root.get_screen("profile")
-      chatInput = profile.ids.chatInput.text
+      word = profile.ids.chatInput.text
+      rate = comparaString(self.choosenWord,word)
+      if rate <= 3:
+        alertMsg = "[b]"+ self.apelido+ "[/b]" + ":" +"[color=00ff2a]Está Perto[/color]"
+        self.client.send(alertMsg.encode(FORMATO))
+        return
+      chatInput = "[b]"+ self.apelido +"[/b]" + ":" + word
       profile.ids.chatInput.text = ""
       self.client.send(chatInput.encode(FORMATO))
       time.sleep(0.2)
