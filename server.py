@@ -13,8 +13,8 @@ server.bind(ADDR)
 
 players = []
 
-def broadcastPlayers():
-    
+def broadcastPlayers(msg):
+
     for player in players:
         try:
             player["conn"].send(msg.encode())
