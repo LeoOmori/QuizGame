@@ -28,9 +28,7 @@ def handleMsg(client,self):
 
 
 class LoginScreen(Screen):
-  
-  def teste(self):
-    apelido = self.ids.apelido.text
+  pass
 
 
 
@@ -65,7 +63,6 @@ class MainApp(MDApp):
       ADDR = (SERVER, PORT)
       self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       self.client.connect(ADDR)
-      self.gameTimer = 0
       thread1 = threading.Thread(target=handleMsg, args=(self.client,self))
       thread1.start()
     
