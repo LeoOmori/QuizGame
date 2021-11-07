@@ -40,15 +40,18 @@ def getMsg(conn, addr):
 
         msg = conn.recv(1024).decode(FORMATO)
         name = msg.split(":")[0]
-
+        existPlayer = False
         for c in players:
-            if c.name == name and c.msg == msg:
-            
-             players.append({
-             "addr":addr,
-             "conn":conn,
-             "name": name
-         })
+            if c["name"] == name and c["conn"] == conn:
+                existPlayer = True
+        if existPlayer is False:
+            players.append({
+                "addr":addr,
+                "conn":conn,
+                "name": name
+            })
+
+            print(players)
         if(msg):
             broadcast(msg)
         

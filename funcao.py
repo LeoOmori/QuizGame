@@ -32,21 +32,8 @@ def comparaString(a,b):
         else:
             matrix[i][j] = min(matrix[i-1][j]+1, matrix[i-1][j-1]+1, matrix[i] [j-1]+1)
 
-    print(matrix)
-    print('')
     diferenca = (matrix[size_a-1][size_b-1])
 
-    if diferenca == 0:
-        print('Sao iguais')
-    elif diferenca <= 2:
-        print('Sao parecidos')
-    else:
-        print("Sao diferentes")
-
-
-
-    print('Distancia entre {}  e {} é {}.'.format(string1, string2, matrix[size_a - 1][size_b - 1]))
-    print('')
 
     return matrix[size_a - 1][size_b - 1]
 comparaString("avengers", "avengar")
