@@ -7,6 +7,7 @@ import socket
 import threading
 import time
 import kivy.properties as kyprops
+from kivymd.uix.list import OneLineListItem
 
 
 from funcao import comparaString;
@@ -23,10 +24,20 @@ def handleMsg(client,self):
   while(True):
     msg = client.recv(1024).decode()
     if(msg.startswith("name:")):
-      chatLog.add_widget(MDLabel(markup=True,text=self.apelido+" entrou no jogo",size_hint_y=None,height=24))
+      chatLog.add_widget(MDLabel(markup=True,text=msg.split(":")[1]+" entrou no jogo",size_hint_y=None,height=24))
     elif(msg.startswith("timer=")):
       # chatLog.add_widget(MDLabel(markup=True,text="ta contando",size_hint_y=None,height=24))
       progress2.value = float(msg.split("=")[1])
+    elif(msg.startswith("playerList:")):
+      pList = msg.split(":")
+      allPlayers = pList[1].split(",")
+      profile.ids.containerList.clear_widgets()
+      for i in allPlayers[:-1]:
+        profile.ids.containerList.add_widget(
+          OneLineListItem(text=i)
+        )
+    elif(msg.startswith("bot:")):
+      pass
     else:
       chatLog.add_widget(MDLabel(markup=True,text=msg,size_hint_y=None,height=24))
 

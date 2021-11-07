@@ -1,4 +1,4 @@
-import socket
+import socket, pickle
 import threading
 import time
 
@@ -13,36 +13,44 @@ server.bind(ADDR)
 
 players = []
 
-def broadcastPlayers(msg):
 
+def playerList(players):
+    playerList = ""
     for player in players:
-        try:
-            player["conn"].send(msg.encode())
-        except socket.error as e:
-            del player
-            print("deletado")
-        time.sleep(0.2)
+        playerList = playerList + player["name"] + ","
+
+    return "playerList:" + playerList 
 
 
 def broadcast(msg):
 
-    for player in players:
+    for index,player in enumerate(players):
         try:
             player["conn"].send(msg.encode())
         except socket.error as e:
-            del player
+            players.pop(index)
             print("deletado")
         time.sleep(0.2)
+
+def checkConnection():
+    while(True):
+        for index,player in enumerate(players):
+            try:
+                player["conn"].send("bot:test".encode())
+            except socket.error as e:
+                players.pop(index)
+                NewPlayerList = playerList(players)
+                broadcast(NewPlayerList)
+            time.sleep(0.2)
+        time.sleep(1)
         
 def getMsg(conn, addr):
-
-
-
 
     while(True):
 
         msg = conn.recv(1024).decode(FORMATO)
         code = msg.split(":")[0]
+
         if code == "name":
             name = msg.split(":")[1]
             players.append({
@@ -51,7 +59,9 @@ def getMsg(conn, addr):
                 "name": name
             })
 
-            print(players)
+            NewPlayerList = playerList(players)
+            broadcast(NewPlayerList)
+            print(NewPlayerList)
         if(msg):
             broadcast(msg)
         
@@ -63,14 +73,17 @@ def timer():
         time.sleep(1)
     broadcast("timer=0")
 
+
 def mainServer():
     print("servidor Iniciado!!!!!!")
     server.listen()
+    threadCheck = threading.Thread(target=checkConnection)
+    threadCheck.start()
     while(True):
         conn, addr = server.accept()
         thread1 = threading.Thread(target=getMsg, args=(conn,addr))
-        thread2 = threading.Thread(target=timer)
-        thread2.start()
+        # thread2 = threading.Thread(target=timer)
+        # thread2.start()
         thread1.start()
 
 mainServer()
