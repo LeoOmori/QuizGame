@@ -18,9 +18,13 @@ def handleMsg(client,self):
   profile = self.root.get_screen("profile")
   chatLog = profile.ids["chatLog"]
   progress2 = profile.ids["progress2"]
+  setApelido = "name:" + self.apelido
+  self.client.send(setApelido.encode(FORMATO))
   while(True):
     msg = client.recv(1024).decode()
-    if(msg.startswith("timer=")):
+    if(msg.startswith("name:")):
+      chatLog.add_widget(MDLabel(markup=True,text=self.apelido+" entrou no jogo",size_hint_y=None,height=24))
+    elif(msg.startswith("timer=")):
       # chatLog.add_widget(MDLabel(markup=True,text="ta contando",size_hint_y=None,height=24))
       progress2.value = float(msg.split("=")[1])
     else:

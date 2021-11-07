@@ -36,15 +36,15 @@ def broadcast(msg):
         
 def getMsg(conn, addr):
 
+
+
+
     while(True):
 
         msg = conn.recv(1024).decode(FORMATO)
-        name = msg.split(":")[0]
-        existPlayer = False
-        for c in players:
-            if c["name"] == name and c["conn"] == conn:
-                existPlayer = True
-        if existPlayer is False:
+        code = msg.split(":")[0]
+        if code == "name":
+            name = msg.split(":")[1]
             players.append({
                 "addr":addr,
                 "conn":conn,
