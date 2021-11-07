@@ -27,6 +27,7 @@ ScreenManager:
             mode: "rectangle"
 
         MDFillRoundFlatButton:
+            id:submitButton
             text: "Conectar"
             theme_text_color: "Custom"
             text_color: 1, 1, 1, 1
@@ -75,47 +76,10 @@ ScreenManager:
                     orientation: "tb-lr"
                     padding:20
                     GridLayout:
+                        id:waitingPlayers
                         cols:2
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"leonardo"
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"conectou..."   
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"leonardo"
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"conectou..."   
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"leonardo"
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"conectou..."  
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"leonardo"
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"conectou..."   
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"leonardo"
-                        MDLabel:
-                            size_hint_y:None
-                            height:30
-                            text:"conectou..."   
+  
+  
             FloatLayout:
                 MDProgressBar:
 

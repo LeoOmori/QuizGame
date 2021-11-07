@@ -15,7 +15,7 @@ from funcao import comparaString;
 FORMATO = 'utf-8'
 
 def handleMsg(client,self):
-
+  login = self.root.get_screen("login")
   profile = self.root.get_screen("profile")
   chatLog = profile.ids["chatLog"]
   progress2 = profile.ids["progress2"]
@@ -31,11 +31,23 @@ def handleMsg(client,self):
     elif(msg.startswith("playerList:")):
       pList = msg.split(":")
       allPlayers = pList[1].split(",")
-      profile.ids.containerList.clear_widgets()
-      for i in allPlayers[:-1]:
-        profile.ids.containerList.add_widget(
-          OneLineListItem(text=i)
-        )
+      if len(allPlayers) <=3 :
+        login.ids.waitingPlayers.clear_widgets()
+        for i in allPlayers[:-1]:
+          login.ids.waitingPlayers.add_widget(
+            MDLabel(size_hint_y=None,height=30,text=i)       
+          )
+          login.ids.waitingPlayers.add_widget(
+            MDLabel(size_hint_y=None,height=30,text="esperando...")       
+          )
+        pass
+      else:
+        self.root.current = 'profile'
+        profile.ids.containerList.clear_widgets()
+        for i in allPlayers[:-1]:
+          profile.ids.containerList.add_widget(
+            OneLineListItem(text=i)
+          )
     elif(msg.startswith("bot:")):
       pass
     else:
@@ -68,8 +80,11 @@ class MainApp(MDApp):
     def createConnection(self):
       self.choosenWord = "avengers"
       login = self.root.get_screen("login")
+      self.apelido = ""
       self.apelido = login.ids.apelido.text
-      self.root.current = 'profile'
+      login.ids.submitButton.disabled = True
+      if self.apelido == "":
+        return
       profile = self.root.get_screen("profile")
       titleWord =  profile.ids.titleWord
       titleWord.text = self.choosenWord
