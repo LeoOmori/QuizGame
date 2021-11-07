@@ -42,7 +42,7 @@ def getMsg(conn, addr):
         name = msg.split(":")[0]
 
         for c in players:
-            if c == name and c == msg:
+            if c.name == name and c.msg == msg:
             
              players.append({
              "addr":addr,
