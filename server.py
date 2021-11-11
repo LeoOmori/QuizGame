@@ -1,4 +1,4 @@
-import socket, pickle
+import socket
 import threading
 import time
 
@@ -7,7 +7,12 @@ PORT = 5050
 ADDR = (SERVER_IP, PORT)
 FORMATO = 'utf-8'
 
-
+GAME = {
+    'started':False,
+    'round':1,
+    'winner':[],
+    'choosenWord':''
+}
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
@@ -57,10 +62,14 @@ def getMsg(conn, addr):
             players.append({
                 "addr":addr,
                 "conn":conn,
-                "name": name
+                "name": name,
+                "points": 0,
+                "isRight": False
             })
 
             NewPlayerList = playerList(players)
+            if len(NewPlayerList) >= 3:
+                GAME['started'] = True
             broadcast(NewPlayerList)
             print(NewPlayerList)
         if(msg):
@@ -69,7 +78,7 @@ def getMsg(conn, addr):
 def timer():
 
     while(True):
-        if len(players) > 0:
+        if len(players) > 0 and GAME['started']:
             lider = players[0]
             print(lider)          
             for i in range(30):
@@ -77,19 +86,18 @@ def timer():
                 broadcast(newMsg)
                 time.sleep(1)
                 broadcast("timer=0")
+
             players.append(lider)
+            print(players)
             players.pop(0)
-
-
+            GAME['round'] += 1
 
 def mainServer():
     print("servidor Iniciado!!!!!!")
     server.listen()
     threadCheck = threading.Thread(target=checkConnection)
     threadCheck.start()
-  
     thread2 = threading.Thread(target=timer)
-    
     thread2.start()
     while(True):
         conn, addr = server.accept()

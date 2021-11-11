@@ -1,4 +1,5 @@
 ScreenManager:
+    LeaderScreen:
     LoginScreen:
     ProfileScreen:
 
@@ -208,10 +209,6 @@ ScreenManager:
                         orientation:"vertical"  
                         size_hint_y: None
                         height:200
-
-
-
-
             BoxLayout:
                 orientation: "horizontal"
                 size_hint_y:None
@@ -226,3 +223,37 @@ ScreenManager:
                     theme_text_color: "Custom"
                     text_color: 1, 1, 1, 1
                     on_press: app.sendMessage()
+
+<LeaderScreen>:
+    name: "leader"
+    GridLayout:
+        cols:1
+        padding:50
+        pos:0,0
+        spacing:10
+        MDLabel:
+            text: "Você é o líder!"
+            adaptive_height: True
+
+        MDSeparator:
+            height: "1dp"
+
+        
+        MDTextField:
+            id:tema
+            hint_text:"Tema"
+            mode: "rectangle"
+        MDTextField:
+            id:dica
+            hint_text: "Dica"
+            mode: "rectangle"
+        MDTextField:
+            id:resposta
+            hint_text: "Resposta"
+            mode: "rectangle"
+
+        MDFillRoundFlatButton:
+            id:submitButton
+            text: "Iniciar rodada"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1

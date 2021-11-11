@@ -17,6 +17,7 @@ FORMATO = 'utf-8'
 def handleMsg(client,self):
   login = self.root.get_screen("login")
   profile = self.root.get_screen("profile")
+  leader = self.root.get_screen("leader")
   chatLog = profile.ids["chatLog"]
   progress2 = profile.ids["progress2"]
   setApelido = "name:" + self.apelido
@@ -31,7 +32,7 @@ def handleMsg(client,self):
     elif(msg.startswith("playerList:")):
       pList = msg.split(":")
       allPlayers = pList[1].split(",")
-      if len(allPlayers) <=3 :
+      if len(allPlayers) <=2 :
         login.ids.waitingPlayers.clear_widgets()
         for i in allPlayers[:-1]:
           login.ids.waitingPlayers.add_widget(
@@ -40,6 +41,8 @@ def handleMsg(client,self):
           login.ids.waitingPlayers.add_widget(
             MDLabel(size_hint_y=None,height=30,text="esperando...")       
           )
+      elif(msg.startwith("leader=")):
+        self.root.current = 'leader'
         pass
       else:
         self.root.current = 'profile'
@@ -54,17 +57,19 @@ def handleMsg(client,self):
       chatLog.add_widget(MDLabel(markup=True,text=msg,size_hint_y=None,height=24))
 
 
+class LeaderScreen(Screen):
+  pass
 class LoginScreen(Screen):
   pass
-
-
 
 class ProfileScreen(Screen):
   pass
 
 
+
 # Create the screen manager
 sm = ScreenManager()
+sm.add_widget(LeaderScreen(name='leader'))
 sm.add_widget(LoginScreen(name='login'))
 sm.add_widget(ProfileScreen(name='profile'))
 
@@ -75,8 +80,7 @@ class MainApp(MDApp):
       kv = Builder.load_file("app.kv")
       return kv
 
-    
-
+  
     def createConnection(self):
       self.choosenWord = "avengers"
       login = self.root.get_screen("login")
