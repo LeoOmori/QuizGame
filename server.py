@@ -8,11 +8,12 @@ ADDR = (SERVER_IP, PORT)
 FORMATO = 'utf-8'
 
 
+
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 players = []
-
+lider = None
 
 def playerList(players):
     playerList = ""
@@ -67,11 +68,18 @@ def getMsg(conn, addr):
         
 def timer():
 
-    for i in range(30):
-        newMsg = "timer="+str(i*3.5)
-        broadcast(newMsg)
-        time.sleep(1)
-    broadcast("timer=0")
+    while(True):
+        if len(players) > 0:
+            lider = players[0]
+            print(lider)          
+            for i in range(30):
+                newMsg = "timer="+str(i*3.5)
+                broadcast(newMsg)
+                time.sleep(1)
+                broadcast("timer=0")
+            players.append(lider)
+            players.pop(0)
+
 
 
 def mainServer():
@@ -79,11 +87,13 @@ def mainServer():
     server.listen()
     threadCheck = threading.Thread(target=checkConnection)
     threadCheck.start()
+  
+    thread2 = threading.Thread(target=timer)
+    
+    thread2.start()
     while(True):
         conn, addr = server.accept()
         thread1 = threading.Thread(target=getMsg, args=(conn,addr))
-        # thread2 = threading.Thread(target=timer)
-        # thread2.start()
         thread1.start()
 
 mainServer()
