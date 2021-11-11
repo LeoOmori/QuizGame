@@ -119,7 +119,7 @@ class MainApp(MDApp):
       tema = leader.ids.tema.text
       dica = leader.ids.dica.text
       resposta = leader.ids.resposta.text
-      list = "tema" + "dica" +  "resposta"
+      list = "tema=" + ","+ tema + "," + dica + "," + resposta
       self.client.send(list.encode(FORMATO))
       print(list)
 
