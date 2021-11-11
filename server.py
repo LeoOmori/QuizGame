@@ -68,7 +68,7 @@ def getMsg(conn, addr):
             })
 
             NewPlayerList = playerList(players)
-            if len(NewPlayerList) >= 3:
+            if len(players) >= 3:
                 GAME['started'] = True
             broadcast(NewPlayerList)
             print(NewPlayerList)
@@ -79,8 +79,9 @@ def timer():
 
     while(True):
         if len(players) > 0 and GAME['started']:
+            leaderStr = "leader=true"
             lider = players[0]
-            lider["conn"].send("leader=".encode())
+            lider["conn"].send(leaderStr.encode())
             print(lider)          
             for i in range(30):
                 newMsg = "timer="+str(i*3.5)
