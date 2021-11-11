@@ -80,6 +80,7 @@ def timer():
     while(True):
         if len(players) > 0 and GAME['started']:
             lider = players[0]
+            lider["conn"].send("leader=".encode())
             print(lider)          
             for i in range(30):
                 newMsg = "timer="+str(i*3.5)
@@ -88,7 +89,6 @@ def timer():
                 broadcast("timer=0")
 
             players.append(lider)
-            print(players)
             players.pop(0)
             GAME['round'] += 1
 
