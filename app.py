@@ -1,3 +1,4 @@
+from re import template
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -17,7 +18,6 @@ FORMATO = 'utf-8'
 def handleMsg(client,self):
   login = self.root.get_screen("login")
   profile = self.root.get_screen("profile")
-  leader = self.root.get_screen("leader")
   chatLog = profile.ids["chatLog"]
   progress2 = profile.ids["progress2"]
   setApelido = "name:" + self.apelido
@@ -32,7 +32,7 @@ def handleMsg(client,self):
     elif(msg.startswith("playerList:")):
       pList = msg.split(":")
       allPlayers = pList[1].split(",")
-      if len(allPlayers) <=2 :
+      if len(allPlayers) <=3 :
         login.ids.waitingPlayers.clear_widgets()
         for i in allPlayers[:-1]:
           login.ids.waitingPlayers.add_widget(
@@ -41,9 +41,7 @@ def handleMsg(client,self):
           login.ids.waitingPlayers.add_widget(
             MDLabel(size_hint_y=None,height=30,text="esperando...")       
           )
-      elif(msg.startwith("leader=")):
-        self.root.current = 'leader'
-        pass
+    
       else:
         self.root.current = 'profile'
         profile.ids.containerList.clear_widgets()
@@ -51,6 +49,9 @@ def handleMsg(client,self):
           profile.ids.containerList.add_widget(
             OneLineListItem(text=i)
           )
+    elif(msg.startswith("leader=")):
+      self.root.current = 'leader'
+      
     elif(msg.startswith("bot:")):
       pass
     else:
@@ -112,6 +113,18 @@ class MainApp(MDApp):
       profile.ids.chatInput.text = ""
       self.client.send(chatInput.encode(FORMATO))
       time.sleep(0.2)
+
+    def sendTema(self):
+      leader = self.root.get_screen("leader")
+      tema = leader.ids.tema.text
+      dica = leader.ids.dica.text
+      resposta = leader.ids.resposta.text
+      list = "tema" + "dica" +  "resposta"
+      self.client.send(list.encode(FORMATO))
+      print(list)
+
+      self.root.current = 'profile'
+            
 
 
 MainApp().run()
