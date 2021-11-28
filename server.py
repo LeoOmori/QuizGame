@@ -68,7 +68,7 @@ def getMsg(conn, addr):
             })
 
             NewPlayerList = playerList(players)
-            if len(players) >= 3:
+            if len(players) >= 2:
                 GAME['started'] = True
             broadcast(NewPlayerList)
             print(NewPlayerList)

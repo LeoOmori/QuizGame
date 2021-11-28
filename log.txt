@@ -1,2 +1,5 @@
-self.ids
-self.ids
+[] - lider escrever o tema
+[] - aparecer a palavra na sala
+[] - contador começa 
+[] - jogador ganhar pontos ao acertar a palavara
+[] - dar reset no placar toda vez que alguém acertar uma palavra

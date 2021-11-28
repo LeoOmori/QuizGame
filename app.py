@@ -32,7 +32,7 @@ def handleMsg(client,self):
     elif(msg.startswith("playerList:")):
       pList = msg.split(":")
       allPlayers = pList[1].split(",")
-      if len(allPlayers) <=3 :
+      if len(allPlayers) <=2 :
         login.ids.waitingPlayers.clear_widgets()
         for i in allPlayers[:-1]:
           login.ids.waitingPlayers.add_widget(
@@ -119,7 +119,7 @@ class MainApp(MDApp):
       tema = leader.ids.tema.text
       dica = leader.ids.dica.text
       resposta = leader.ids.resposta.text
-      list = "tema=" + ","+ tema + "," + dica + "," + resposta
+      list = "tema=" + tema + "," + dica + "," + resposta
       self.client.send(list.encode(FORMATO))
       print(list)
 
