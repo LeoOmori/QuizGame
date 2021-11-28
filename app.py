@@ -122,7 +122,6 @@ class MainApp(MDApp):
       list = "tema=" + tema + "," + dica + "," + resposta
       self.client.send(list.encode(FORMATO))
       print(list)
-
       self.root.current = 'profile'
             
 

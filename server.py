@@ -11,7 +11,10 @@ GAME = {
     'started':False,
     'round':1,
     'winner':[],
-    'choosenWord':''
+    'choosenWord': '',
+    'choosenTheme': '',
+    'choosenHint': '',
+    'leaderChoosing': True
 }
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,7 +59,14 @@ def getMsg(conn, addr):
 
         msg = conn.recv(1024).decode(FORMATO)
         code = msg.split(":")[0]
+        action = msg.split("=")
 
+        if action[0] == "tema":
+            theme = action[1].split(',')
+            GAME['choosenTheme'] == theme[0]
+            GAME['choosenHint'] = theme[1]
+            GAME["choosenWord"] = theme[2]
+            GAME["leaderChoosing"] = False
         if code == "name":
             name = msg.split(":")[1]
             players.append({
@@ -72,26 +82,38 @@ def getMsg(conn, addr):
                 GAME['started'] = True
             broadcast(NewPlayerList)
             print(NewPlayerList)
-        if(msg):
+        else:
             broadcast(msg)
         
 def timer():
 
     while(True):
-        if len(players) > 0 and GAME['started']:
+        if len(players) > 0 and GAME['started'] and GAME['leaderChoosing']:
             leaderStr = "leader=true"
             lider = players[0]
             lider["conn"].send(leaderStr.encode())
             print(lider)          
-            for i in range(30):
-                newMsg = "timer="+str(i*3.5)
+            for i in range(10):
+                if GAME["leaderChoosing"] == False:
+                    break
+                newMsg = "LeaderTimer="+str(i*10)
                 broadcast(newMsg)
                 time.sleep(1)
-                broadcast("timer=0")
-
+            broadcast("timer=0")
             players.append(lider)
             players.pop(0)
             GAME['round'] += 1
+
+def RoundTimer():
+    while(True):
+        if GAME["leaderChoosing"] == False:
+            for i in range(10):
+                newMsg = "timer="+str(i*10)
+                broadcast(newMsg)
+                time.sleep(1)
+            broadcast("timer=0")
+            GAME["leaderChoosing"] = True
+
 
 def mainServer():
     print("servidor Iniciado!!!!!!")
@@ -100,6 +122,8 @@ def mainServer():
     threadCheck.start()
     thread2 = threading.Thread(target=timer)
     thread2.start()
+    thread3 = threading.Thread(target=RoundTimer)
+    thread3.start()
     while(True):
         conn, addr = server.accept()
         thread1 = threading.Thread(target=getMsg, args=(conn,addr))
