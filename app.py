@@ -52,11 +52,15 @@ def handleMsg(client,self):
       self.root.current = 'leader'
 
     elif(msg.startswith("palavra=")):
+
       splitMsg = msg.split("=")
       msgSepareted = splitMsg[1].split(",")
       profile.ids["Tema"].text = "[b]" + "Tema:"  + "[/b]" + msgSepareted[0] + "\n" + "[b]" + "Pista:" +"[/b]"+ msgSepareted[1]
-      profile.ids["titleWord"].text = msgSepareted[2]
-      print("hello")
+      word = "_" * len(msgSepareted[2])
+      profile.ids["titleWord"].text = word
+
+      self.titleword = msgSepareted[2]
+
       
     elif(msg.startswith("bot:")):
       pass
