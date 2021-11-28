@@ -63,11 +63,10 @@ def getMsg(conn, addr):
 
         if action[0] == "tema":
             theme = action[1].split(',')
-            GAME['choosenTheme'] == theme[0]
-            GAME['choosenHint'] = theme[1]
-            GAME["choosenWord"] = theme[2]
             GAME["leaderChoosing"] = False
-        if code == "name":
+            newWord = 'palavra=' + theme[0] + "," + theme[1] + "," + theme[2]
+            broadcast(newWord)
+        elif code == "name":
             name = msg.split(":")[1]
             players.append({
                 "addr":addr,

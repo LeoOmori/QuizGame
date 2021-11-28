@@ -41,7 +41,6 @@ def handleMsg(client,self):
           login.ids.waitingPlayers.add_widget(
             MDLabel(size_hint_y=None,height=30,text="esperando...")       
           )
-    
       else:
         self.root.current = 'profile'
         profile.ids.containerList.clear_widgets()
@@ -51,6 +50,10 @@ def handleMsg(client,self):
           )
     elif(msg.startswith("leader=")):
       self.root.current = 'leader'
+
+    elif(msg.startswith("palavra=")):
+      profile.ids["Tema"].text = '[b]Tema[/b]:  teste\n[b] Pista[/b]:  TESTE TESTETSTE\n '
+      print("hello")
       
     elif(msg.startswith("bot:")):
       pass
