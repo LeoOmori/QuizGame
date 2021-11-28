@@ -52,7 +52,10 @@ def handleMsg(client,self):
       self.root.current = 'leader'
 
     elif(msg.startswith("palavra=")):
-      profile.ids["Tema"].text = '[b]Tema[/b]:  teste\n[b] Pista[/b]:  TESTE TESTETSTE\n '
+      splitMsg = msg.split("=")
+      msgSepareted = splitMsg[1].split(",")
+      profile.ids["Tema"].text = "[b]" + "Tema:"  + "[/b]" + msgSepareted[0] + "\n" + "[b]" + "Pista:" +"[/b]"+ msgSepareted[1]
+      profile.ids["titleWord"].text = msgSepareted[2]
       print("hello")
       
     elif(msg.startswith("bot:")):
@@ -86,7 +89,7 @@ class MainApp(MDApp):
 
   
     def createConnection(self):
-      self.choosenWord = "avengers"
+      
       login = self.root.get_screen("login")
       self.apelido = ""
       self.apelido = login.ids.apelido.text
@@ -94,8 +97,6 @@ class MainApp(MDApp):
       if self.apelido == "":
         return
       profile = self.root.get_screen("profile")
-      titleWord =  profile.ids.titleWord
-      titleWord.text = self.choosenWord
       PORT = 5050
       SERVER = "127.0.0.1"
       ADDR = (SERVER, PORT)
