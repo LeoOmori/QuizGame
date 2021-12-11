@@ -220,10 +220,11 @@ ScreenManager:
                     hint_text: "escreva sua resposta"
                     icon_left: "pencil"
                 MDFillRoundFlatButton:
+                    id:chatButton
                     text: "enviar"
                     theme_text_color: "Custom"
                     text_color: 1, 1, 1, 1
-                    on_press: app.sendMessage()
+                    on_release: app.sendMessage()
 
 <LeaderScreen>:
     name: "leader"
@@ -261,7 +262,7 @@ ScreenManager:
             on_press: app.sendTema()
         FloatLayout:
             MDProgressBar:
-
-                value:95
+                id:leaderProgress
+                value:0
                 color:(0.4,0.6,1,1)
                 pos_hint:{"x":0,"top":0.3}

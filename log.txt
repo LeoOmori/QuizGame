@@ -1,5 +1,5 @@
-[] - lider escrever o tema
-[] - aparecer a palavra na sala
-[] - contador começa 
-[] - jogador ganhar pontos ao acertar a palavara
-[] - dar reset no placar toda vez que alguém acertar uma palavra
+[] - aparecer o nome 
+[] - esquema de acerto
+[] - esquema de pontuação
+[] - termino da partida
+[] - exceções
