@@ -1,5 +1,3 @@
-[] - aparecer o nome 
-[] - esquema de acerto
-[] - esquema de pontuação
-[] - termino da partida
-[] - exceções
+[x] - mostrar players em ordem de pontos
+[x] - retornar o podium
+[ ] - resetar o jogo 

@@ -41,7 +41,7 @@ def handleMsg(client,self):
       pList = msg.split(":")
       allPlayers = pList[1].split(",")
       if self.isWaiting:
-        if len(allPlayers) <=2 :
+        if len(allPlayers) <=3 :
           login.ids.waitingPlayers.clear_widgets()
           for i in allPlayers[:-1]:
             login.ids.waitingPlayers.add_widget(
@@ -92,7 +92,21 @@ def handleMsg(client,self):
       if float(msg.split("=")[1]) == 100:
         self.root.current = 'profile'
         self.isLeader == False
-      
+    elif (msg.startswith("podium=")):
+      self.isRight = False
+      self.isLeader = False
+      self.choosenWord = ''
+      podiumStr = msg.split("=")[1].split(',')
+      msgPodiumStr = "1:" + podiumStr[0] + " " + "2:" + podiumStr[1] + " " + "3:" + podiumStr[2]
+      chatLog.add_widget(MDLabel(markup=True,text="Podium:",size_hint_y=None,height=24))
+      chatLog.add_widget(MDLabel(markup=True,text=msgPodiumStr,size_hint_y=None,height=24))
+      chatLog.add_widget(MDLabel(markup=True,text="Proxima rodada começara em breve",size_hint_y=None,height=24))
+    elif (msg.startswith("code=")):
+      self.root.current = 'login'
+      login.ids.submitButton.disabled = False
+      login.ids.waitingPlayers.clear_widgets()
+      self.client.shutdown(socket.SHUT_RDWR)
+      self.client.close()
     elif(msg.startswith("bot:")):
       pass
     else:
@@ -128,18 +142,19 @@ class MainApp(MDApp):
       self.isRight = False
       self.lockChat = True
       self.isLeader = False
-      self.choosenWord = ' '
+      self.choosenWord = ''
       login = self.root.get_screen("login")
       self.apelido = ""
       self.apelido = login.ids.apelido.text
-      login.ids.submitButton.disabled = True
-      if self.apelido == "":
+      self.id = login.ids.ip.text
+      if self.apelido == "" or self.id == "":
         return
+      login.ids.submitButton.disabled = True
       profile = self.root.get_screen("profile")
       chatButton = profile.ids['chatButton']
       chatButton.disabled = True
       PORT = 5050
-      SERVER = "127.0.0.1"
+      SERVER = self.id
       ADDR = (SERVER, PORT)
       self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       self.client.connect(ADDR)
@@ -150,6 +165,8 @@ class MainApp(MDApp):
       profile = self.root.get_screen("profile")
       progress2 = profile.ids["progress2"]
       word = profile.ids.chatInput.text
+      if word is '':
+        return
       rate = comparaString(self.choosenWord,word)
       if rate == 0:
         basePoint = 2
@@ -161,10 +178,12 @@ class MainApp(MDApp):
         fullPoint = basePoint + (100 - progress2.value)/10
         pointStr = "isRight=" + str(int(fullPoint))
         self.client.send(pointStr.encode(FORMATO))
+        profile.ids.chatInput.text = ""
         return 
       elif rate <= 3:
         alertMsg = "[b]"+ self.apelido+ "[/b]" + ":" +"[color=002ea1]Está Perto[/color]"
-        self.client.send(alertMsg.encode(FORMATO))
+        self.client.send(alertMsg.lower().strip().encode(FORMATO))
+        profile.ids.chatInput.text = ""
         return
       chatInput = "[b]"+ self.apelido +"[/b]" + ":" + word
       profile.ids.chatInput.text = ""
@@ -172,14 +191,19 @@ class MainApp(MDApp):
       time.sleep(0.2)
 
     def sendTema(self):
-      self.isRight = False
       leader = self.root.get_screen("leader")
+      if(leader.ids.tema.text is '') or (leader.ids.dica.text is '') or (leader.ids.resposta.text is ''):
+        return  
+      self.isRight = False
       tema = leader.ids.tema.text
       dica = leader.ids.dica.text
       self.isLeader = True
       resposta = leader.ids.resposta.text
-      list = "tema=" + tema + "," + dica + "," + resposta
+      list = "tema=" + tema + "," + dica + "," + resposta.lower().strip()
       self.client.send(list.encode(FORMATO))
       self.root.current = 'profile'
+      leader.ids.tema.text = ''
+      leader.ids.dica.text = ''
+      leader.ids.resposta.text = ''
             
 MainApp().run()
